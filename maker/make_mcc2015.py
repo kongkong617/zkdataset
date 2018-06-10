@@ -12,7 +12,7 @@ from zk.dataset.mcc2015 import AsmopcodeData, load_label
 HOME = os.environ['HOME']
 MCC2015 = os.path.join(HOME, 'DataSet/kaggle/MCC2015')
 ORIASM = os.path.join(MCC2015, 'train/asm')
-TRAINLABEL = os.path.join(MCC2015, 'trainlabels.csv')
+TRAINLABEL = os.path.join(MCC2015, 'trainLabels.csv')
 DTRAIN = os.path.join(MCC2015, 'dtrain')
 
 # make setting
