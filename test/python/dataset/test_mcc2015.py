@@ -1,7 +1,7 @@
 import os
 import unittest
 import numpy as np
-from zk.dataset import AsmopcodeData, AsmopGenerator
+from zk.dataset.mcc2015 import AsmopcodeData, AsmopGenerator, load_label
 from zk.visual import Visual
 
 CURPATH = os.path.dirname(__file__)
@@ -41,6 +41,13 @@ class TestMcc2015(unittest.TestCase):
         opcode19visulnp = asm_resizer[3, 1, 0:64]
         self.assertEqual(opcode19visulnp.all(), _opcode19visulnp.all())
 
+    def test_load_label(self):
+        name = os.path.join(CURPATH, "trainLabels.csv")
+        label = load_label(name)
+
+        _key = "0rgudc7PpbexCtBjNqWF"
+        self.assertEqual(len(label), 38)
+        self.assertEqual(label[_key], 2)
 
 if __name__ == "__main__":
     unittest.main()
