@@ -50,7 +50,7 @@ def listdir_oriasm(path):
     return sample_path
 
 
-def do_make(file_path, lable):
+def do_make(file_path, label):
     log = logging.getLogger('woker {}'.format(os.getpid()))
 
     asm_id = os.path.basename(file_path).split('.')[0]
