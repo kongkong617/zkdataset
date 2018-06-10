@@ -132,14 +132,24 @@ class AsmopcodeData:
         return padding
         
 
-def load_label(name) -> Dict[str,str]:
+def load_label(name:Path) -> Dict[str,str]:
+    """
+    Argumet:
+        `name`: Path to a csv file
+            which like:
+            row0:   "Id","Class"
+            row1:   "01kcPWA9K2BOxQeS5Rju",1
+                        .   .   .   
+                        .   .   .          
+            rown:   "0ZiQmgtxzHe9v5O8Lf2k",m   
+    """
     label = {}
-    with open(name, "rb") as f:
+    with open(name) as f:
         fdata = csv.reader(f)
-        for id_class in fdata[1:]:
-            id_class_sp = id_class.split(',')
+        heading = next(fdata)
+        for row in fdata:
             label.update({
-                id_class_sp[0] : id_class_sp[1]
+                row[0]: int(row[1])
             })
 
     return label
