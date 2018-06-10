@@ -1,1 +1,0 @@
-from .mcc2015 import AsmopcodeData, AsmopGenerator

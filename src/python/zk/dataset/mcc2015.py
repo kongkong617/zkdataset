@@ -145,23 +145,3 @@ def load_label(name) -> Dict[str,str]:
     return label
 
 
-def asmop_padding(npy, target:Tuple):
-    """
-    Argumet:
-        `npy`: A numpy of (height, width)
-            an asmop in a row. len(asmop)=width
-        `target`: A tuple of (nb_asmop_dim0, nb_asmop_dim2)
-    Return:
-        A numpy of (channel, None, col)
-    """
-    nb_dim0, nb_dim2 = target[0], target[1]
-    (h, w) = npy.shape
-    nb_dim1 = h  // (nb_dim0 * nb_dim2)
-    padding = np.ones([nb_dim0, nb_dim1, nb_dim2*w])
-
-    asmop_gen = AsmopGenerator(npy)
-    # for dim1 in range(nb_dim1):
-    #     for dim2 in range(nb_dim2):
-    #         for dim0 in range(nb_dim0):
-    #             padding[dim]
-
