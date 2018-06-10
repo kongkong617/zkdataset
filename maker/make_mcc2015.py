@@ -50,18 +50,32 @@ def listdir_oriasm(path):
     return sample_path
 
 
-def do_make(file_path) -> Tuple:
+def do_make(file_path, lable):
     log = logging.getLogger('woker {}'.format(os.getpid()))
 
     asm_id = os.path.basename(file_path).split('.')[0]
     log.info('parse asm_id = {}'.format(asm_id))
+    asm_label = label[asm_id]
+    log.info('{} is {}'.format(asm_id, asm_label))
+    
+    try:
+        asm_np = AsmopcodeData(name=file_path,
+                               vencodelen=VENCODELEN,
+                               shape=SHAPE,
+                               order=ORDER)()
+    except Exception as e:
+        log.error(e)
+        return False
 
-    asm_np = AsmopcodeData(name=file_path,
-                                vencodelen=VENCODELEN,
-                                shape=SHAPE,
-                                order=ORDER)()
+    label_path = os.path.join(DTRAIN, repr(asm_id))
+    if make_path(label_path):
+        file_path = os.path.join(label_path, asm_id+".npy")
+        np.save(file_path, asm_np)
+        log.info('save {}'.format(file_path))
+    else:
+        return False
 
-    return (asm_id, asm_np)
+    return True
 
 
 async def dispatch_work(executor, sample_path):
@@ -73,7 +87,7 @@ async def dispatch_work(executor, sample_path):
     log.info('creating executor tasks')
     loop = asyncio.get_event_loop()
     update_tasks = [
-        loop.run_in_executor(executor, do_make, sample)
+        loop.run_in_executor(executor, do_make, sample, label)
         for sample in sample_path
     ]
     log.info('waiting for executor tasks...')
@@ -83,14 +97,6 @@ async def dispatch_work(executor, sample_path):
     sum_make = 0
     for item in results:
         if item:
-            asm_id, asm_np = item
-            asm_label = label[asm_id]
-            log.info('{} is {}'.format(asm_id, asm_label))
-            label_path = os.path.join(DTRAIN, repr(asm_id))
-            if make_path(label_path):
-                file_path = os.path.join(label_path, asm_id+".npy")
-                np.save(file_path, asm_np)
-                log.info('save {}'.format(file_path))
             sum_make += 1
 
     log.info('deal sample = {}'.format(sum_make))
