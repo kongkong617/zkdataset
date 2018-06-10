@@ -1,5 +1,6 @@
 import os
 import csv
+import math
 import numpy as np
 import os.path as Path 
 from typing import Dict, List, Tuple
@@ -40,10 +41,10 @@ class AsmopGenerator:
 
     def _make_generator(self):
         for i in range(self.nb_opcode):
-            yield self.asmop_np[i:]
+            yield self.asmop_np[i, :]
 
 
-class Asmopcode:
+class AsmopcodeData:
     """
     Argument:
         `name`: os.path
@@ -73,27 +74,24 @@ class Asmopcode:
         self.asmop_np = self.construct(name, True)
 
     def __call__(self, name=None):
-        if name == None:
-            name = self.name
         return self.construct(name, False)
 
     def construct(self, name, is_create):
         if is_create and name == None:
             return None
         elif not is_create and name == None:
-            raise ValueError("name is None")
+            return self.asmop_np
 
         asmgen, padding = self._visual(name)
         target_np = self._resize(asmgen, padding)
 
+        self.asmop_np = target_np
         return target_np
 
     def _visual(self, name):
         asm_np, _ = self.vengine(name)
         (tdim1, tdim2, tdim3) = self.shape
-        tdim2 = asm_np.size / (tdim1 * tdim3)
-        if not isinstance(tdim2, int):
-            raise ValueError("Invalid shape = {}".format(self.shape))
+        tdim2 = math.ceil(asm_np.size / (tdim1 * tdim3))
         
         padding = np.zeros([tdim1, tdim2, tdim3])
         asmgen = AsmopGenerator(asm_np)
@@ -103,31 +101,37 @@ class Asmopcode:
         (dim1, dim2, dim3) = padding.shape
         
         if tuple(self.order) == (1, 3, 2):  # (channel, row, col)
-            n_col = dim3 / self.vencodelen
-            if not isinstance(n_col, int):
-                raise ValueError("Invalid shape[2] = {}".format(self.shape[1]))
+            n_col, check = divmod(dim3, self.vencodelen)
+            if check:
+                raise ValueError("Invalid shape[2] = {}".format(self.shape[2]))
             for i_row in range(dim2):
                 for i_col in range(n_col):
                     start = i_col * self.vencodelen
                     end = start + self.vencodelen
                     for i_channel in range(dim1):
-                        padding[i_channel, i_row, start:end] = next(asmgen)
+                        try:
+                            padding[i_channel, i_row, start:end] = next(asmgen)
+                        except StopIteration:
+                            pass  
         elif tuple(self.order) == (3, 2, 1):   # (row, col, channel)
-            n_col = dim2 / self.vencodelen
-            if not isinstance(n_col, int):
-                raise ValueError("Invalid shape[2] = {}".format(self.shape[1]))
+            n_col, check = divmod(dim2, self.vencodelen)
+            if check:
+                raise ValueError("Invalid shape[1] = {}".format(self.shape[1]))
             for i_row in range(dim1):
                 for i_col in range(n_col):
                     start = i_col * self.vencodelen
                     end = start + self.vencodelen
                     for i_channel in range(dim3):
-                        padding[i_row, start:end, i_channel] = next(asmgen)
+                        try:
+                            padding[i_row, start:end, i_channel] = next(asmgen)
+                        except StopIteration:
+                            pass 
         else:
             raise ValueError("Invalid order = {}")
 
         return padding
         
-        
+
 def load_label(name) -> Dict[str,str]:
     label = {}
     with open(name, "rb") as f:
