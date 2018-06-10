@@ -66,6 +66,10 @@ def do_make(file_path) -> Tuple:
 
 async def dispatch_work(executor, sample_path):
     log = logging.getLogger('master {}'.format(os.getpid()))
+
+    log.info('load label from {}'.format(TRAINLABEL))
+    label = load_label(TRAINLABEL)
+
     log.info('creating executor tasks')
     loop = asyncio.get_event_loop()
     update_tasks = [
@@ -73,9 +77,6 @@ async def dispatch_work(executor, sample_path):
         for sample in sample_path
     ]
     log.info('waiting for executor tasks...')
-
-    log.info('load label from {}'.format(TRAINLABEL))
-    label = load_label(TRAINLABEL)
 
     completed, _ = await asyncio.wait(update_tasks)
     results = [t.result() for t in completed]
