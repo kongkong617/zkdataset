@@ -67,7 +67,7 @@ def do_make(file_path, label):
         log.error(e)
         return False
 
-    label_path = os.path.join(DTRAIN, repr(asm_id))
+    label_path = os.path.join(DTRAIN, repr(asm_label))
     if make_path(label_path):
         file_path = os.path.join(label_path, asm_id+".npy")
         np.save(file_path, asm_np)
