@@ -102,7 +102,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s %(name)8s %(levelname)4s %(message)s',
                         datefmt='%m-%d %H:%M',
-                        filename=('make-mcc2015-%s.log' % strf_time),
+                        filename=('mcc2015_maker.log'),
                         filemode='w')
     console = logging.StreamHandler()
     console.setLevel(logging.INFO)
