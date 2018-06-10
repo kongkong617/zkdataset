@@ -130,7 +130,7 @@ if __name__ == '__main__':
 
     event_loop = asyncio.get_event_loop()
     executor = concurrent.futures.ProcessPoolExecutor(
-         max_workers=16,
+         max_workers=32,
     )
     try:
         event_loop.run_until_complete(
