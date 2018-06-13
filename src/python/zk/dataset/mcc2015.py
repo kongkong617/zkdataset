@@ -208,8 +208,8 @@ class MccPytablesMaker:
     
     @property
     def capacity(self):
-        root = self.handl.get_node('/')
-        nb_nodes = len(root._f_iter_nodes())
+        root = self.handl.get_node('/mc2015')
+        nb_nodes = len(root._f_list_nodes())
 
         return nb_nodes
 
