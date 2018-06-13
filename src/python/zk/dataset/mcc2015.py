@@ -168,8 +168,8 @@ class DirDataGenerator:
                 for name in filenames:
                     file_path = os.path.join(dirpath, name)
                     data = np.load(file_path)
-
-                    yield label, name, data  
+                    name = name.split(".")[0]
+                    yield label, name, data
 
     def __iter__(self):
         return self._g
