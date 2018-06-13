@@ -1,5 +1,5 @@
 import os
-from .base import DirDataGenerator, MccPytablesMaker
+from zk.dataset.mcc2015 import DirDataGenerator, MccPytablesMaker
 
 # Path setting
 HOME = os.environ['HOME']
