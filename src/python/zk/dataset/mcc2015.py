@@ -190,7 +190,7 @@ class MccPytablesMaker:
 
         for (label, name, data) in self.data_gen:
             x_shape = data.shape
-            name = label + "_" + name
+            name = "L_" + label + "_" + name
             # create tabel
             print("create table {}".format(name))
             tb_desp = self.make_tb_desp(x_shape)
