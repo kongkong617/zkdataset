@@ -198,9 +198,11 @@ class MccPytablesMaker:
             a_row = a_table.row
             # fill table
             a_row['x'] = data
-            a_row['y'] = to_categorical(int(label), self.nb_class)
+            a_row['y'] = to_categorical(int(label)-1, self.nb_class)
+            a_row.append()
             # flush table 
             a_table.flush()
+            print("flush table {}".format(name))
         
         self.handl = f5
     
