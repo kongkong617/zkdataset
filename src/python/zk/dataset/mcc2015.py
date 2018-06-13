@@ -202,7 +202,7 @@ class MccPytablesMaker:
             a_row.append()
             # flush table 
             a_table.flush()
-            print("flush table {}".format(name))
+            # print("flush table {}".format(name))
         
         self.handl = f5
     
