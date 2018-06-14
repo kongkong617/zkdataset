@@ -6,7 +6,9 @@ import os.path as Path
 import tables as tb
 from keras.utils import to_categorical 
 from typing import Dict, List, Tuple
-from zk.visual import Visual 
+from zk.visual import Visual
+from zk.dataset.data_column import DataColumnsPartition
+from zk.dataset.partitioner import CrossValidatePartitioner 
 
 LABEL = {
     '1': 'Ramnit',
@@ -20,6 +22,17 @@ LABEL = {
     '9': 'Gatak'
 }
 
+QUANTITY = {
+    '1': 1541,
+    '2': 2478,
+    '3': 2942,
+    '4': 475,
+    '5': 42,
+    '6': 751,
+    '7': 398,
+    '8': 1220,
+    '9': 1013
+}
 
 class AsmopGenerator:
     """
@@ -208,7 +221,7 @@ class MccPytablesMaker:
     
     @property
     def capacity(self):
-        root = self.handl.get_node('/mc2015')
+        root = self.handl.get_node('/mcc2015')
         nb_nodes = len(root._f_list_nodes())
 
         return nb_nodes
@@ -222,3 +235,5 @@ class MccPytablesMaker:
             y = tb.UInt8Col(shape=(self.nb_class,))
 
         return TbDesp
+
+
