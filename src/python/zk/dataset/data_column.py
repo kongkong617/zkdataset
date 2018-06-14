@@ -13,6 +13,7 @@ class DataColumns:
         self._category_cache = {}
         self._capacity_cache = None
         self._iterator = None
+        self._dataset_nodes = None
         self.data = self._process(data)
 
     def _process(self, data):
@@ -121,7 +122,7 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
         node = self._dataset_nodes[i]
         x = self.KEYS.COLNAME_X
         y = self.KEYS.COLNAME_Y
-        return node[x], node[y]
+        return node[0][x], node[0][y]
         
     def _make_iterator(self):
         return self._partitioner.partition(self)

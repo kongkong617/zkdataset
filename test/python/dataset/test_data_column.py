@@ -46,7 +46,7 @@ class TestUnbalancedNotFixedPyTablesColums(unittest.TestCase):
             y = tb.UInt8Col(shape=(2,))
         return TbDesp
 
-    def test_capacity_category(self):
+    def test_capacity(self):
         datapath, nodepath, nb = self.get_or_create_dataset()
         a_datacolumn = UnbalancedNotFixedPyTablesColums(datapath, nodepath)
 
@@ -56,23 +56,53 @@ class TestUnbalancedNotFixedPyTablesColums(unittest.TestCase):
         for k, v in _capacity.items():
             cp += v 
         assert cp == nb
+        a_datacolumn.close()
+
+    def test_category(self):
+        datapath, nodepath, nb = self.get_or_create_dataset()
+        a_datacolumn = UnbalancedNotFixedPyTablesColums(datapath, nodepath)
 
         _category = a_datacolumn.category
         assert isinstance(_category, Dict)
         ct = 0
         label = ['0', '1']
         for k, v in _category.items():
-            assert k in label
-            ct += len(v)
-        assert ct == nb
+            if k == label[0]:
+                assert len(v) == (nb // 4) * 3
+            else:
+                assert len(v) == nb // 4
         a_datacolumn.close()
 
     def test_partition(self):
-        nb_blocks = 
-        datapath, nodepath, nb = self.get_or_create_dataset()
-        partitioner = CrossValidatePartitioner()
-        a_datacolumn = UnbalancedNotFixedPyTablesColums(datapath, nodepath)
+        nb_blocks = 5
+        in_block = [0, 1, 2]
 
-    
+        datapath, nodepath, nb = self.get_or_create_dataset()
+        partitioner = CrossValidatePartitioner(nb_blocks, in_block)
+        a_datacolumn = UnbalancedNotFixedPyTablesColums(datapath, nodepath, partitioner)
+
+        count = 0
+        for x, y in a_datacolumn:
+            assert x.shape[0] == 8
+            assert y.shape[0] == 2
+            count += 1
+        assert count == (nb // nb_blocks) * len(in_block)
+        a_datacolumn.close()
+
+    def test_partition_resampling(self):
+        nb_blocks = 5
+        in_block = [0, 1, 2]
+        resampling = 12
+
+        datapath, nodepath, nb = self.get_or_create_dataset()
+        partitioner = CrossValidatePartitioner(nb_blocks, in_block, resampling)
+        a_datacolumn = UnbalancedNotFixedPyTablesColums(datapath, nodepath, partitioner)
+
+        count = 0
+        for _, _ in a_datacolumn:
+            count += 1
+        assert count == resampling * 2
+        a_datacolumn.close()
+
 if __name__ == "__main__":
     unittest.main()
