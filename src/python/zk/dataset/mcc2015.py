@@ -7,8 +7,6 @@ import tables as tb
 from keras.utils import to_categorical 
 from typing import Dict, List, Tuple
 from zk.visual import Visual
-from zk.dataset.data_column import DataColumnsPartition
-from zk.dataset.partitioner import CrossValidatePartitioner 
 
 LABEL = {
     '1': 'Ramnit',
