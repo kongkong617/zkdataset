@@ -20,10 +20,15 @@ class Partitioner:
     def _get_valid_indices(self, indicies):
         return indicies
 
-    def partition(self, data_column: Iterable) -> Iterable:
+    def partition(self, data_column: Iterable, unlimited=False) -> Iterable:
         def valid_index_generator(data_column, indices):
-            for i in indices:
-                yield data_column[i]
+            if unlimited:
+                while True:
+                    for i in indices:
+                        yield data_column[i]
+            else:
+                for i in indices:
+                    yield data_column[i]
 
         return valid_index_generator(
             data_column,

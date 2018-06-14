@@ -90,8 +90,9 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
         COLNAME_X = 'x'
         COLNAME_Y = 'y'
 
-    def __init__(self, path_file, path_dataset, partitioner=None):
+    def __init__(self, path_file, path_dataset, partitioner=None, unlimited=False):
         super().__init__((path_file, path_dataset))
+        self._unlimited = unlimited
         self._partitioner = partitioner
 
     def _process(self, data):
@@ -125,7 +126,7 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
         return node[0][x], node[0][y]
         
     def _make_iterator(self):
-        return self._partitioner.partition(self)
+        return self._partitioner.partition(self, self._unlimited)
 
     @property
     def columns(self):
