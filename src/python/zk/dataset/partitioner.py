@@ -48,7 +48,7 @@ class CrossValidatePartitioner(Partitioner):
         # indices is a category Dict
         if isinstance(indices, Dict):
             class_info = {}
-            for k, v in indices:
+            for k, v in indices.items():
                 class_info.update({
                     k: self.make_valid_indices(v)
                 })
