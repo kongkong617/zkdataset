@@ -126,8 +126,8 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
         if len(x.shape) == 3:
             shape = [-1] + [i for i in x.shape]
             x = np.reshape(x, shape)
-            
-        return x, y
+
+        return (x, y)
 
     def _make_iterator(self):
         return self._partitioner.partition(self, self._unlimited)
