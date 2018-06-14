@@ -83,7 +83,7 @@ class TestUnbalancedNotFixedPyTablesColums(unittest.TestCase):
 
         count = 0
         for x, y in a_datacolumn:
-            assert x.shape[0] == 8
+            assert x.shape[1] == 8
             assert y.shape[0] == 2
             count += 1
         assert count == (nb // nb_blocks) * len(in_block)

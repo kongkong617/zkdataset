@@ -121,10 +121,14 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
 
     def __getitem__(self, i):
         node = self._dataset_nodes[i]
-        x = self.KEYS.COLNAME_X
-        y = self.KEYS.COLNAME_Y
-        return node[0][x], node[0][y]
-        
+        x = node[0][self.KEYS.COLNAME_X]
+        y = node[0][self.KEYS.COLNAME_Y]
+        if len(x.shape) == 3:
+            shape = [-1] + [i for i in x.shape]
+            x = np.reshape(x, shape)
+            
+        return x, y
+
     def _make_iterator(self):
         return self._partitioner.partition(self, self._unlimited)
 
