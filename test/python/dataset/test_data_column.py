@@ -12,7 +12,7 @@ CURPATH = os.path.dirname(__file__)
 class TestUnbalancedNotFixedPyTablesColums(unittest.TestCase):
     def get_or_create_dataset(self):
         name = "unbalancenotfixed.h5"
-        nb = 50
+        nb = 40
 
         dataset = os.path.join(CURPATH, name)
         if not os.path.isfile(dataset):
@@ -21,7 +21,7 @@ class TestUnbalancedNotFixedPyTablesColums(unittest.TestCase):
 
             label = [0, 0, 0, 1]
             for i in range(nb):
-                y_label = np.random.choice(label)
+                y_label = label[i%4]
                 x = np.ones([8, i+2, 10])
                 x_shape = x.shape
                 # create tabel
@@ -66,6 +66,12 @@ class TestUnbalancedNotFixedPyTablesColums(unittest.TestCase):
             ct += len(v)
         assert ct == nb
         a_datacolumn.close()
+
+    def test_partition(self):
+        nb_blocks = 
+        datapath, nodepath, nb = self.get_or_create_dataset()
+        partitioner = CrossValidatePartitioner()
+        a_datacolumn = UnbalancedNotFixedPyTablesColums(datapath, nodepath)
 
     
 if __name__ == "__main__":
