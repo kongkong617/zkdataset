@@ -10,10 +10,10 @@ from typing import Dict, Iterable
 
 class DataColumns:
     def __init__(self, data):
-        self.data = self._process(data)
+        self._category_cache = {}
         self._capacity_cache = None
-        self._category_cache = None
         self._iterator = None
+        self.data = self._process(data)
 
     def _process(self, data):
         return data
@@ -89,17 +89,16 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
         COLNAME_X = 'x'
         COLNAME_Y = 'y'
 
-    def __init__(self, path_file, path_dataset, partitioner):
+    def __init__(self, path_file, path_dataset, partitioner=None):
         super().__init__((path_file, path_dataset))
         self._partitioner = partitioner
 
     def _process(self, data):
         path_file, path_dataset = data
-        self._file = tb.open_file(str(path_file))
+        self._file = tb.open_file(path_file, "r")
         self._node = self._file.get_node(path_dataset)
 
-        self._category_cache = {}
-        self._dataset_nodes = self._node._f_list_node()
+        self._dataset_nodes = self._node._f_list_nodes()
 
         for i, dataset in enumerate(self._dataset_nodes):
             label = dataset.name.split(self.KEYS.MARK)[1]
