@@ -120,9 +120,11 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
         return _capacity
 
     def __getitem__(self, i):
-        datarow = self._dataset_nodes[i][0]
-        x = datarow[self.KEYS.COLNAME_X]
-        y = datarow[self.KEYS.COLNAME_Y]
+        node = self._dataset_nodes[i]
+        colnames = node.colnames
+        print(colnames)
+        x = node[0][colnames[0]]
+        y = node[0][colnames[1]]
 
         y = np.array(y)
         # print(y.shape)
