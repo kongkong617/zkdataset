@@ -14,8 +14,9 @@ TOTAL_SAMPLE = 10860
 def main():
     data_gen = DirDataGenerator(DTRAIN)
     tbmaker = MccPytablesMaker(TBPATH, NB_CLASS, data_gen)
-    tbmaker.make() 
-    assert tbmaker.capacity == TOTAL_SAMPLE
+    tbmaker.make()
+    print(tbmaker.capacity)
+    # assert tbmaker.capacity == TOTAL_SAMPLE
     tbmaker.close()
 
 

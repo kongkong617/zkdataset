@@ -200,6 +200,8 @@ class MccPytablesMaker:
         group = f5.create_group("/", "mcc2015")
 
         for (label, name, data) in self.data_gen:
+            if not self.filter_shape(data):
+                continue
             x_shape = data.shape
             name = "L_" + label + "_" + name
             # create tabel
@@ -226,6 +228,13 @@ class MccPytablesMaker:
 
     def close(self):
         self.handl.close()
+
+    def filter_shape(self, data):
+        _shape = data.shape
+        for i in _shape:
+            if i <= 0:
+                return False
+        return True
 
     def make_tb_desp(self, x_shape):
         class TbDesp(tb.IsDescription):
