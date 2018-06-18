@@ -122,8 +122,8 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
     def __getitem__(self, i):
         node = self._dataset_nodes[i]
         colnames = node.colnames
-        print(i)
-        print(colnames)
+        # print(i)
+        # print(colnames)
         x = node[0][self.KEYS.COLNAME_X]
         y = node[0][self.KEYS.COLNAME_Y]
 
