@@ -16,7 +16,11 @@ def main():
     tbmaker = MccPytablesMaker(TBPATH, NB_CLASS, data_gen)
     tbmaker.make()
     print(tbmaker.capacity)
-    # assert tbmaker.capacity == TOTAL_SAMPLE
+    with open("mcc2015-h5.log", "w") as f:
+        for k, v in tbmaker.capacity.items():
+            line = line = "{}  : {}".format(k, v)
+            f.writelines(line + os.linesep)
+
     tbmaker.close()
 
 

@@ -194,6 +194,7 @@ class MccPytablesMaker:
         self.name = name
         self.nb_class = nb_class
         self.data_gen = data_gen
+        self._summary = {}
 
     def make(self):
         f5 = tb.open_file(self.name, "w")
@@ -202,6 +203,13 @@ class MccPytablesMaker:
         for (label, name, data) in self.data_gen:
             if not self.filter_shape(data):
                 continue
+
+            if not self._summary.get(label):
+                self._summary.update({label : 1})
+            else:
+                count = self._summary.get(label)
+                self._summary.update({label : count+1})
+
             x_shape = data.shape
             name = "L_" + label + "_" + name
             # create tabel
@@ -221,10 +229,7 @@ class MccPytablesMaker:
     
     @property
     def capacity(self):
-        root = self.handl.get_node('/mcc2015')
-        nb_nodes = len(root._f_list_nodes())
-
-        return nb_nodes
+        return self._summary
 
     def close(self):
         self.handl.close()
