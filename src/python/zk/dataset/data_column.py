@@ -125,11 +125,13 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
         y = node[0][self.KEYS.COLNAME_Y]
 
         y = np.array(y)
-        
+
         if len(x.shape) == 3:
             shape = [-1] + [i for i in x.shape]
             x = np.reshape(x, shape)
 
+        print(x)
+        print(y)
         return (x, y)
 
     def _make_iterator(self):
