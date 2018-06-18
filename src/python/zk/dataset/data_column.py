@@ -123,9 +123,9 @@ class UnbalancedNotFixedPyTablesColums(DataColumns):
         node = self._dataset_nodes[i]
         x = node[0][self.KEYS.COLNAME_X]
         y = node[0][self.KEYS.COLNAME_Y]
-        shape = list(reversed(y.shape))
-        y = np.reshape(y, shape)
-       
+
+        y = np.array(y)
+        
         if len(x.shape) == 3:
             shape = [-1] + [i for i in x.shape]
             x = np.reshape(x, shape)
