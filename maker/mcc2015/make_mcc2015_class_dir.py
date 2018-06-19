@@ -67,7 +67,7 @@ def do_make(file_path, label):
         log.error(e)
         return False
 
-    if asm_np == None:
+    if asm_np is None:
         log.warning('{} asm_np is None'.format(asm_id))
         return False    # fix asm_np dim1==0
 
