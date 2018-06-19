@@ -30,7 +30,7 @@ class TestMcc2015(unittest.TestCase):
         _tshape = (8, 2, 128)
         self.assertTupleEqual(asm_resizer.shape, _tshape)
 
-    def test_AsmopcodeData_order(self):
+    def test_AsmopcodeData_order_0(self):
         name001 = os.path.join(CURPATH, "asm001")
         asm_resizer = AsmopcodeData(name=name001,
                                    vencodelen=64,
@@ -39,6 +39,17 @@ class TestMcc2015(unittest.TestCase):
         _opcode19visul = [0, 255, 0, 255, 0, 255, 255, 0] + [0 for i in range(56)]
         _opcode19visulnp = np.array(_opcode19visul)
         opcode19visulnp = asm_resizer[3, 1, 0:64]
+        self.assertEqual(opcode19visulnp.all(), _opcode19visulnp.all())
+    
+    def test_AsmopcodeData_order_1(self):
+        name001 = os.path.join(CURPATH, "asm001")
+        asm_resizer = AsmopcodeData(name=name001,
+                                   vencodelen=64,
+                                   shape=(None, 128, 8),
+                                   order=(3, 2, 1))()
+        _opcode19visul = [0, 255, 0, 255, 0, 255, 255, 0] + [0 for i in range(56)]
+        _opcode19visulnp = np.array(_opcode19visul)
+        opcode19visulnp = asm_resizer[1, 0:64, 3]
         self.assertEqual(opcode19visulnp.all(), _opcode19visulnp.all())
 
     def test_load_label(self):

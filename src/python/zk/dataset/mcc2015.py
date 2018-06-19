@@ -107,12 +107,20 @@ class AsmopcodeData:
 
     def _visual(self, name):
         asm_np, _ = self.vengine(name)
-        (tdim1, max_tdim2, tdim3) = self.shape
-        tdim2 = math.ceil(asm_np.size / (tdim1 * tdim3))
-        if max_tdim2:
-            tdim2 = max_tdim2
+        (tdim1, tdim2, tdim3) = self.shape
 
-        if tdim2 <= 0:    # fix vengine return asm_np.size == 0
+        if self.order == (1, 3, 2):
+            cal_tdim2 = math.ceil(asm_np.size / (tdim1 * tdim3))
+            if not tdim2:
+                tdim2 = cal_tdim2
+            
+        
+        if self.order == (3, 2, 1):
+            cal_tdim1 = math.ceil(asm_np.size / (tdim2 * tdim3))
+            if not tdim1:
+                tdim1 = cal_tdim1
+
+        if 0 in (tdim1, tdim2, tdim3):    # fix vengine return asm_np.size == 0
             return None, None
         
         padding = np.zeros([tdim1, tdim2, tdim3])
