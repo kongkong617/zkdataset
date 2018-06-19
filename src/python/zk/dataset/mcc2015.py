@@ -97,7 +97,7 @@ class AsmopcodeData:
             return self.asmop_np
 
         asmgen, padding = self._visual(name)
-        if padding == None:     # fix dim2==0
+        if padding is None:     # fix dim2==0
             return None
 
         target_np = self._resize(asmgen, padding)
