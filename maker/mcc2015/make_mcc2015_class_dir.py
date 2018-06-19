@@ -17,8 +17,8 @@ DTRAIN = os.path.join(MCC2015, 'dtrain')
 
 # make setting
 VENCODELEN = 64
-SHAPE = (8, 70, 1024)
-ORDER = (1, 3, 2)
+SHAPE = (50, 1024, 8)
+ORDER = (3, 2, 1)
 
 
 def make_path(file_path):
@@ -66,6 +66,10 @@ def do_make(file_path, label):
     except Exception as e:
         log.error(e)
         return False
+
+    if asm_np == None:
+        log.warning('{} asm_np is None'.format(asm_id))
+        return False    # fix asm_np dim1==0
 
     log.info('{} asmopcode shape is {}'.format(asm_id, asm_np.shape))
 

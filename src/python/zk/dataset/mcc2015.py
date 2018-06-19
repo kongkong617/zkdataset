@@ -66,8 +66,8 @@ class AsmopcodeData:
         `shape`: A tuple of visual asmopcode shape
             (dim1, dim2, dim3)
             it could be (channel, row, col) or (row, col, channel)
-            where row is unfixed.
-            define dim2 the max nrows
+            if row == None, row is unfixed.
+            else row is fixed.
         `order`: A tuple of index order, who padding first.
             it must be one of:
             >>> (1, 3, 2)   (channel, row, col)
@@ -97,6 +97,9 @@ class AsmopcodeData:
             return self.asmop_np
 
         asmgen, padding = self._visual(name)
+        if padding == None:     # fix dim2==0
+            return None
+
         target_np = self._resize(asmgen, padding)
 
         self.asmop_np = target_np
@@ -106,8 +109,11 @@ class AsmopcodeData:
         asm_np, _ = self.vengine(name)
         (tdim1, max_tdim2, tdim3) = self.shape
         tdim2 = math.ceil(asm_np.size / (tdim1 * tdim3))
-        if tdim2 >= max_tdim2:
+        if max_tdim2:
             tdim2 = max_tdim2
+
+        if tdim2 <= 0:    # fix vengine return asm_np.size == 0
+            return None, None
         
         padding = np.zeros([tdim1, tdim2, tdim3])
         asmgen = AsmopGenerator(asm_np)
@@ -128,7 +134,7 @@ class AsmopcodeData:
                         try:
                             padding[i_channel, i_row, start:end] = next(asmgen)
                         except StopIteration:
-                            pass  
+                            break  
         elif tuple(self.order) == (3, 2, 1):   # (row, col, channel)
             n_col, check = divmod(dim2, self.vencodelen)
             if check:
@@ -141,7 +147,7 @@ class AsmopcodeData:
                         try:
                             padding[i_row, start:end, i_channel] = next(asmgen)
                         except StopIteration:
-                            pass 
+                            break 
         else:
             raise ValueError("Invalid order = {}")
 
