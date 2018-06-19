@@ -17,7 +17,7 @@ DTRAIN = os.path.join(MCC2015, 'dtrain')
 
 # make setting
 VENCODELEN = 64
-SHAPE = (8, None, 1024)
+SHAPE = (8, 70, 1024)
 ORDER = (1, 3, 2)
 
 
@@ -66,6 +66,8 @@ def do_make(file_path, label):
     except Exception as e:
         log.error(e)
         return False
+
+    log.info('{} asmopcode shape is {}'.format(asm_id, asm_np.shape))
 
     label_path = os.path.join(DTRAIN, repr(asm_label))
     if make_path(label_path):
@@ -130,7 +132,7 @@ if __name__ == '__main__':
 
     event_loop = asyncio.get_event_loop()
     executor = concurrent.futures.ProcessPoolExecutor(
-         max_workers=32,
+         max_workers=64,
     )
     try:
         event_loop.run_until_complete(

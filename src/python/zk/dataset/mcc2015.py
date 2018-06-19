@@ -66,7 +66,8 @@ class AsmopcodeData:
         `shape`: A tuple of visual asmopcode shape
             (dim1, dim2, dim3)
             it could be (channel, row, col) or (row, col, channel)
-            where row must be None
+            where row is unfixed.
+            define dim2 the max nrows
         `order`: A tuple of index order, who padding first.
             it must be one of:
             >>> (1, 3, 2)   (channel, row, col)
@@ -103,8 +104,10 @@ class AsmopcodeData:
 
     def _visual(self, name):
         asm_np, _ = self.vengine(name)
-        (tdim1, tdim2, tdim3) = self.shape
+        (tdim1, max_tdim2, tdim3) = self.shape
         tdim2 = math.ceil(asm_np.size / (tdim1 * tdim3))
+        if tdim2 >= max_tdim2:
+            tdim2 = max_tdim2
         
         padding = np.zeros([tdim1, tdim2, tdim3])
         asmgen = AsmopGenerator(asm_np)
