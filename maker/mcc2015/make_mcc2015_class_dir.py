@@ -13,11 +13,11 @@ HOME = os.environ['HOME']
 MCC2015 = os.path.join(HOME, 'DataSet/kaggle/MCC2015')
 ORIASM = os.path.join(MCC2015, 'train/asm')
 TRAINLABEL = os.path.join(MCC2015, 'trainLabels.csv')
-DTRAIN = os.path.join(MCC2015, 'dtrain')
+DTRAIN = os.path.join(MCC2015, 'dtrain_unfixed')
 
 # make setting
 VENCODELEN = 64
-SHAPE = (50, 1024, 8)
+SHAPE = (None, 1024, 8)
 ORDER = (3, 2, 1)
 
 
