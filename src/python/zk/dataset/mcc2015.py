@@ -266,3 +266,48 @@ class MccPytablesMaker:
         return TbDesp
 
 
+class MccFixedPytablesMaker:
+    def __init__(self, name, nb_class, shape, data_gen):
+        self.name = name
+        self.nb_class = nb_class
+        self.shape = shape
+        self.data_gen = data_gen
+        self._summary = {}
+
+    def make(self):
+        f5 = tb.open_file(self.name, "w")
+        group = f5.create_group("/", "mcc2015")
+        # create tabel
+        tb_desp = self.make_tb_desp()
+        table = f5.create_table(group, "data", tb_desp)
+        a_row = table.row
+
+        count = 0
+        for (label, name, data) in self.data_gen:
+            if not self._summary.get(label):
+                self._summary.update({label : 1})
+            else:
+                count = self._summary.get(label)
+                self._summary.update({label : count+1})
+            # fill table
+            a_row['x'] = data
+            a_row['y'] = to_categorical(int(label)-1, self.nb_class)
+            a_row.append()
+            # flush table 
+            count += 1
+            if count % 500 == 0:
+                table.flush()
+                print("flush table {}".format(count))
+
+        f5.close()
+    
+    @property
+    def capacity(self):
+        return self._summary
+
+    def make_tb_desp(self):
+        class TbDesp(tb.IsDescription):
+            x = tb.UInt8Col(shape=self.shape)
+            y = tb.UInt8Col(shape=(self.nb_class,))
+
+        return TbDesp
