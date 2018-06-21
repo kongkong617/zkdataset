@@ -63,6 +63,44 @@ class DataColumns:
         return self._make_iterator()
 
 
+class DataColumnsWithGetItem(DataColumns):
+    def _make_iterator(self):
+        def it():
+            for i in range(self.capacity):
+                yield self.__getitem__(i)
+
+        return it()
+
+    def __getitem__(self, i):
+        raise NotImplementedError
+
+
+class PyTablesColumns(DataColumnsWithGetItem):
+    def __init__(self, path_file, path_dataset):
+        super().__init__((path_file, path_dataset))
+
+    def _process(self, data):
+        path_file, path_dataset = data
+        self._file = tb.open_file(str(path_file))
+        self._node = self._file.get_node(path_dataset)
+
+    def __getitem__(self, i):
+        result = {}
+        data = self._node[i]
+        for k in self.columns:
+            result[k] = np.array(data[k])
+        return result
+
+    @property
+    def columns(self):
+        return tuple(self._node.colnames)
+
+    def _calculate_capacity(self):
+        return self._node.shape[0]
+
+    def close(self):
+        self._file.close()
+
 # self add 
 class UnbalancedNotFixedPyTablesColums(DataColumns):
     """

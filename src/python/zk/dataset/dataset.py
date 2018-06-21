@@ -1,37 +1,48 @@
-"""
-from https://github.com/Hong-Xiang/dxlearn/tree/master/src/python/dxl/learn/dataset
-"""
+import keras
 import tables as tb
-from typing import Dict
-import tensorflow as tf
+import numpy as np
+from typing import Tuple
 
 
-class DatasetFromColumns:
-    def __init__(self,
-                 columns,
-                 nb_epochs,
-                 batch_size=None,
-                 shuffle=True):
-        self.nb_epochs = nb_epochs
-        self.shuffle = shuffle
+class DataSet(keras.utils.Sequence):
+    class KEYS:
+        X = 'x'
+        Y = 'y'
+
+    def __init__(self, columns, partitioner, batch_size, shape, nb_class, shuffle=True):
+        self.columns = columns
+        self.partitioner = partitioner
         self.batch_size = batch_size
-        self._columns = columns
-        self._data = []
-        self._iterator = None
+        self.shuffle = shuffle
+        self.shape = shape
+        self.nb_class = nb_class
 
-    def _batch_iterator(self):
+        self.indexs = np.array([i for i in partitioner.partition(columns)])
+        np.random.shuffle(self.indexs)
+
+    def __len__(self):
+        return self.partitioner.get_capacity(self.columns) // self.batch_size
+
+    def __getitem__(self, index):
+        indexs = self.indexs[index*self.batch_size : (index+1)*self.batch_size]
+        X, y = self._data_generation(indexs)
+        return X, y
+
+    def _data_generation(self, list_ids):
+        X = np.empty((self.batch_size, *self.shape))
+        y = np.empty((self.batch_size, self.nb_class))
+
+        for i, id in enumerate(list_ids):
+            result = self.columns[id]
+            X[i, ] = result[self.KEYS.X]
+            y[i, ] = result[self.KEYS.Y]
+
+        return X, y
+
+    def on_epoch_end(self):
         if self.shuffle:
-            nb_fetch = 4 * self.batch_size
-            for i in range(nb_fetch):
-                self._data[i] = next(self._columns)
-
-    def __next__(self):
-        if self._iterator is None:
-            self._iterator = iter(self)
-        return next(self._iterator)
-
-    def __iter__(self):
-        return self._batch_iterator()
+            np.random.shuffle(self.indexs)
+        
 
     
         
