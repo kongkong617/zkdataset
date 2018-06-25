@@ -2,6 +2,7 @@ import keras
 import tables as tb
 import numpy as np
 from typing import Tuple
+from keras.utils import to_categorical 
 
 
 class DataSet(keras.utils.Sequence):
@@ -28,16 +29,16 @@ class DataSet(keras.utils.Sequence):
         X, y = self._data_generation(indexs)
         return X, y
 
-    def _data_generation(self, list_ids):
+    def _data_generation(self, list_ids):        
         X = np.empty((self.batch_size, *self.shape))
-        y = np.empty((self.batch_size, self.nb_class))
+        y = np.empty((self.batch_size), dtype=int)
 
         for i, id in enumerate(list_ids):
             result = self.columns[id]
             X[i, ] = result[self.KEYS.X]
             y[i, ] = result[self.KEYS.Y]
 
-        return X, y
+        return X, to_categorical(y, num_classes=self.nb_class)
 
     def on_epoch_end(self):
         if self.shuffle:

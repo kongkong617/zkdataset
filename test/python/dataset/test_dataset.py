@@ -2,7 +2,6 @@ import os
 import unittest
 import tables as tb
 import numpy as np
-from keras.utils import to_categorical 
 from zk.dataset.dataset import DataSet
 from zk.dataset.partitioner import CrossValidatePartitioner
 from zk.dataset.data_column import PyTablesColumns
@@ -39,7 +38,7 @@ class TestDataSet(unittest.TestCase):
                 x = np.ones(shape)
                  # fill table
                 a_row['x'] = x
-                a_row['y'] = to_categorical(y_label, 2)
+                a_row['y'] = y_label
                 a_row.append()
                 # flush table 
                 a_table.flush()  
@@ -50,7 +49,7 @@ class TestDataSet(unittest.TestCase):
     def get_tb_desp(self, shape, nb_class):
         class TbDesp(tb.IsDescription):
             x = tb.UInt8Col(shape=shape)
-            y = tb.UInt8Col(shape=(nb_class,))
+            y = tb.UInt8Col(shape=())
         return TbDesp
 
     def get_columns(self):
@@ -89,3 +88,7 @@ class TestDataSet(unittest.TestCase):
         self.assertTupleEqual(X.shape, (C.BATCH_SIZE, *C.SHAPE))
         self.assertTupleEqual(y.shape, (C.BATCH_SIZE, C.NB_CLASS))
         
+
+
+if __name__ == "__main__":
+    unittest.main()

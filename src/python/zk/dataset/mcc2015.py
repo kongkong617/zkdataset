@@ -291,7 +291,8 @@ class MccFixedPytablesMaker:
                 self._summary.update({label : count+1})
             # fill table
             a_row['x'] = data
-            a_row['y'] = to_categorical(int(label)-1, self.nb_class)
+            # a_row['y'] = to_categorical(int(label)-1, self.nb_class)
+            a_row['y'] = int(label) - 1
             a_row.append()
             # flush table 
             count += 1
@@ -308,6 +309,6 @@ class MccFixedPytablesMaker:
     def make_tb_desp(self):
         class TbDesp(tb.IsDescription):
             x = tb.UInt8Col(shape=self.shape)
-            y = tb.UInt8Col(shape=(self.nb_class,))
+            y = tb.UInt8Col(shape=())
 
         return TbDesp
