@@ -196,7 +196,7 @@ class DirDataGenerator:
         for dirpath, _, filenames in os.walk(name):
             if filenames:
                 for d in filenames:
-                _data.append(os.path.join(dirpath, d))
+                    _data.append(os.path.join(dirpath, d))
 
         random.shuffle(_data)
         return _data
