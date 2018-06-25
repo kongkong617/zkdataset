@@ -1,6 +1,7 @@
 import os
 import csv
 import math
+import random
 import numpy as np
 import os.path as Path
 import tables as tb
@@ -187,17 +188,25 @@ def load_label(name:Path) -> Dict[str,str]:
 
 class DirDataGenerator:
     def __init__(self, name):
-        self._g = self._make_gen(name)
+        self._data = self._list_data(name)
+        self._g = self._make_gen()
 
-    def _make_gen(self, name):
+    def _list_data(self, name) -> List:
+        _data = []
         for dirpath, _, filenames in os.walk(name):
             if filenames:
-                label = os.path.basename(dirpath)
-                for name in filenames:
-                    file_path = os.path.join(dirpath, name)
-                    data = np.load(file_path)
-                    name = name.split(".")[0]
-                    yield label, name, data
+                for d in filenames:
+                _data.append(os.path.join(dirpath, d))
+
+        random.shuffle(_data)
+        return _data
+
+    def _make_gen(self):
+        for fpath in self._data:
+            label = os.path.basename(os.path.dirname(fpath))
+            data = np.load(fpath)
+            name = os.path.basename(fpath).split(".")[0]
+            yield label, name, data
 
     def __iter__(self):
         return self._g
