@@ -114,7 +114,7 @@ class NestNPColumns(DataColumns):
                 label = os.path.basename(dirpath)
                 for d in filenames:
                     index.append(os.path.join(dirpath, d))
-                self._capacity_cache.update({label: index})
+                self._category_cache.update({label: index})
 
         return self._category_cache
     
