@@ -1,9 +1,8 @@
 """
 Dataset partition utilities.
 Class Partition is a index provider, thus provide index of next sample in ndarray.
-from https://github.com/Hong-Xiang/dxlearn/tree/master/src/python/dxl/learn/dataset
+redesigned from https://github.com/Hong-Xiang/dxlearn/tree/master/src/python/dxl/learn/dataset
 """
-from collections import UserDict
 from typing import Dict, Iterable
 from .resampling import get_resampling
 import numpy as np
@@ -11,7 +10,10 @@ import numpy as np
 
 class Partitioner:
     def _get_original_indices(self, data_column):
-        return range(data_column.capacity)
+        if isinstance(data_column.capacity, int):
+            return range(data_column.capacity)
+        elif isinstance(data_column.capacity, Dict):
+            return data_column.category
 
     def _get_valid_indices(self, indicies):
         return indicies
