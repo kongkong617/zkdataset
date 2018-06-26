@@ -119,7 +119,11 @@ class NestNPColumns(DataColumns):
         return self._category_cache
     
     def __getitem__(self, i):
-        return np.load(i)
+        label = os.path.basename(os.path.dirname(i))
+        return {
+            'x' : np.load(i),
+            'y' : int(label)
+        }
 
     def _calculate_capacity(self):
         _capacity = {}
