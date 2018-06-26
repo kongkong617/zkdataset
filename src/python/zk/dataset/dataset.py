@@ -50,6 +50,10 @@ class DataSet(keras.utils.Sequence):
             L[i, ] = self.columns[id][self.KEYS.Y]
 
         return L
+
+    @property
+    def capacity(self):
+        return self.partitioner.get_capacity(self.columns)
             
     def on_epoch_end(self):
         if self.shuffle:
