@@ -47,7 +47,7 @@ class DataSet(keras.utils.Sequence):
         for i, id in enumerate(self.indexs[:lg]):
             L[i, ] = self.columns[id][self.KEYS.Y]
 
-        return to_categorical(L, num_classes=self.nb_class)
+        return L
             
     def on_epoch_end(self):
         if self.shuffle:
