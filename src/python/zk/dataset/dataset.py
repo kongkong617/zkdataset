@@ -42,8 +42,9 @@ class DataSet(keras.utils.Sequence):
     
     @property
     def labels(self):
-        L = np.empty((len(self.indexs)), dtype=int)
-        for i, id in enumerate(self.indexs):
+        lg = len(self) * self.batch_size
+        L = np.empty((lg), dtype=int)
+        for i, id in enumerate(self.indexs[:lg]):
             L[i, ] = self.columns[id][self.KEYS.Y]
 
         return to_categorical(L, num_classes=self.nb_class)
