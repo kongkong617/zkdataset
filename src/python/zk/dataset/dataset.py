@@ -42,6 +42,8 @@ class DataSet(keras.utils.Sequence):
     
     @property
     def labels(self):
+        """Confusion Matrix
+        """
         lg = len(self) * self.batch_size
         L = np.empty((lg), dtype=int)
         for i, id in enumerate(self.indexs[:lg]):
