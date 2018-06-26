@@ -1,7 +1,8 @@
 """
 DataColumns, a representation of table-like data.
-from https://github.com/Hong-Xiang/dxlearn/tree/master/src/python/dxl/learn/dataset
+redesigned from https://github.com/Hong-Xiang/dxlearn/tree/master/src/python/dxl/learn/dataset
 """
+import os
 import h5py
 import tables as tb
 import numpy as np
@@ -100,6 +101,42 @@ class PyTablesColumns(DataColumnsWithGetItem):
 
     def close(self):
         self._file.close()
+
+
+class NestNPColumns(DataColumns):
+    def __init__(self, path):
+        super().__init__(path)
+
+    def _process(self, data):
+        for dirpath, _, filenames in os.walk(data):
+            if filenames:
+                index = []
+                label = os.path.basename(dirpath)
+                for d in filenames:
+                    index.append(os.path.join(dirpath, d))
+                self._capacity_cache.update({label: index})
+
+        return self._category_cache
+    
+    def __getitem__(self, i):
+        return np.load(i)
+
+    def _calculate_capacity(self):
+        _capacity = {}
+        for k, v in self._category_cache.items():
+            _capacity.update({k : len(v)})
+
+        self._capacity_cache = _capacity
+        return _capacity
+    
+    def _make_iterator(self):
+        def it():
+            for _, v in self.category.items():
+                for i in v:
+                    yield self.__getitem__(i)
+        
+        return it()
+
 
 # self add 
 class UnbalancedNotFixedPyTablesColums(DataColumns):
