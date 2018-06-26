@@ -122,7 +122,7 @@ class NestNPColumns(DataColumns):
         label = os.path.basename(os.path.dirname(i))
         return {
             'x' : np.load(i),
-            'y' : int(label)
+            'y' : int(label) - 1
         }
 
     def _calculate_capacity(self):
