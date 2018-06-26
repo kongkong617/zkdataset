@@ -39,7 +39,15 @@ class DataSet(keras.utils.Sequence):
             y[i, ] = result[self.KEYS.Y]
 
         return X, to_categorical(y, num_classes=self.nb_class)
+    
+    @property
+    def labels(self):
+        L = np.empty((len(self.indexs)), dtype=int)
+        for i, id in enumerate(self.indexs):
+            L[i, ] = self.columns[id][self.KEYS.Y]
 
+        return to_categorical(y, num_classes=self.nb_class)
+            
     def on_epoch_end(self):
         if self.shuffle:
             np.random.shuffle(self.indexs)
