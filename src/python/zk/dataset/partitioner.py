@@ -10,10 +10,10 @@ import numpy as np
 
 class Partitioner:
     def _get_original_indices(self, data_column):
-        if isinstance(data_column.capacity, int):
-            return range(data_column.capacity)
-        elif isinstance(data_column.capacity, Dict):
+        if isinstance(data_column.capacity, Dict):
             return data_column.category
+        else:
+            return range(data_column.capacity)
 
     def _get_valid_indices(self, indicies):
         return indicies
