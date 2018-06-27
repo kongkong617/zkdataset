@@ -61,7 +61,7 @@ class CrossValidateResamplePartitioner(Partitioner):
         if isinstance(in_blocks, int):
             in_blocks = [in_blocks]
         self._in_blocks = in_blocks
-        self._resampling = resampling
+        self._resampling = resampling or {}
 
     def _get_valid_indices(self, indices):
         result = []
