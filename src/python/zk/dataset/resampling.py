@@ -2,7 +2,7 @@ import numpy as np
 from typing import Dict, List  
 
 
-def get_resampling( class_info:Dict[str, List], target:Dict[str, List]):
+def get_resampling( class_info:Dict[str, List], target:Dict[str, List]) -> Dict:
     """
     Argument:
         `class_info`: A Dict[str, List]
@@ -12,18 +12,19 @@ def get_resampling( class_info:Dict[str, List], target:Dict[str, List]):
     Return:
         A shuffled tuple
     """
-    result = None
+    result = {}
     for k, v in class_info.items():
         v_array = np.array(v)
         if k in target.keys():
             sampling = np.random.choice(v_array, target[k])
         else:
             sampling = v_array
-            
-        if result is None:
-            result = sampling
-        else:
-            result = np.hstack((result, sampling))
+        
+        np.random.shuffle(sampling)
+        # if result is None:
+        #     result = sampling
+        # else:
+        #     result = np.hstack((result, sampling))
+        result.update({k : sampling})
 
-    np.random.shuffle(result)
-    return tuple(result)
+    return result

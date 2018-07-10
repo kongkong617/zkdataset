@@ -8,11 +8,11 @@ class TestGetResampling(unittest.TestCase):
             '2' : [3, 4, 5, 6]
         }
         target = {
-            '1' : 3
+            '1' : 3,
+            '2' : 3
         }
 
         result = get_resampling(class_info, target)
 
-        assert len(result) == 7
-        class_1 = result.count(1) + result.count(2)
-        assert class_1 == 3
+        for _, v in result.items():
+            assert len(v) == 3
