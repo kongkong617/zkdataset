@@ -67,19 +67,15 @@ class CrossValidateResamplePartitioner(Partitioner):
         result = []
         # indices is a category Dict
         if isinstance(indices, Dict):
-            class_info = {}
-            for k, v in indices.items():
-                class_info.update({
-                    k: self.make_valid_indices(v)
-                })
             # resamping
             if self._resampling:
-                result = get_resampling(class_info, self._resampling)
+                resample_result = get_resampling(indices, self._resampling)
             else:
-                for i in class_info.values():
-                    result.extend(i)
-                # shuffle
-                np.random.shuffle(result)
+                resample_result = indices
+
+            result = []
+            for k, v in resample_result.items():
+                result.extend(self.make_valid_indices(v))
         # indices is range like 
         else:
             result = self.make_valid_indices(indices)
