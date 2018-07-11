@@ -14,5 +14,9 @@ class TestGetResampling(unittest.TestCase):
 
         result = get_resampling(class_info, target)
 
-        for _, v in result.items():
+        for k, v in result.items():
             assert len(v) == 3
+            if k == '1':
+                self.assertListEqual(v[:2], [1, 2])
+            else:
+                self.assertListEqual(v, [3, 4, 5])

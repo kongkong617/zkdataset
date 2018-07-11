@@ -14,17 +14,16 @@ def get_resampling( class_info:Dict[str, List], target:Dict[str, List]) -> Dict:
     """
     result = {}
     for k, v in class_info.items():
-        v_array = np.array(v)
+        lg = len(v)
         if k in target.keys():
-            sampling = np.random.choice(v_array, target[k])
+            if lg >= target[k]:
+                sampling = v[:target[k]]
+            else:
+                sampling = v[:]
+                sampling.extend(np.random.choice(v, target[k]-lg))
         else:
-            sampling = v_array
+            sampling = v[:]
         
-        np.random.shuffle(sampling)
-        # if result is None:
-        #     result = sampling
-        # else:
-        #     result = np.hstack((result, sampling))
         result.update({k : sampling})
 
     return result
