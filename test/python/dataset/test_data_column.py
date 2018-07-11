@@ -6,7 +6,7 @@ import tables as tb
 from typing import Dict
 from keras.utils import to_categorical 
 from zk.dataset.partitioner import CrossValidateResamplePartitioner
-from zk.dataset.data_column import UnbalancedNotFixedPyTablesColums
+from zk.dataset.data_column import UnbalancedNotFixedPyTablesColums, NestNPColumns
 
 CURPATH = os.path.dirname(__file__)
 
@@ -105,6 +105,43 @@ class TestUnbalancedNotFixedPyTablesColums(unittest.TestCase):
             count += 1
         assert count == resampling * 2
         a_datacolumn.close()
+
+
+class TestNestNPColumns(unittest.TestCase):
+    def get_path(self):
+        '''
+        nestnp:
+            1:
+                123.npy
+                1234.npy
+            2:
+                111.npy
+                2222.npy
+                3333.npy
+        '''
+        return os.path.join(CURPATH, "nestnp")
+    
+    def make_columns(self):
+        return NestNPColumns(self.get_path())
+
+    def test_capacity(self):
+        column = self.make_columns()
+        expect_c = {
+            '1': 2,
+            '2': 3
+        }
+        self.assertDictEqual(expect_c, column.capacity)
+
+    def test_getitem(self):
+        column = self.make_columns()
+        i = os.path.join(self.get_path(), "1", "123.npy")
+        expect_i = {
+            'x': [1, 2, 3],
+            'y': 0
+        }
+        self.assertListEqual(list(column[i]['x']), expect_i['x'])
+        self.assertEqual(column[i]['y'], expect_i['y'])
+
 
 if __name__ == "__main__":
     unittest.main()

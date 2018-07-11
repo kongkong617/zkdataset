@@ -96,11 +96,13 @@ class CrossValidateResamplePartitioner(Partitioner):
 
         if isinstance(data_columns.capacity, Dict):
             for k, v in data_columns.category.items():
-                kc = (len(v) // self._nb_blocks) * len(self._in_blocks)
-                if k in self._resampling:       
-                    partition_capacity += self._resampling[k]
+                if k in self._resampling:
+                    lg = self._resampling[k]
                 else:
-                    partition_capacity += kc
+                    lg = len(v)
+
+                kc = (lg // self._nb_blocks) * len(self._in_blocks)
+                partition_capacity += kc
         else:
             len_block = data_columns.capacity // self._nb_blocks
             partition_capacity =  len_block * len(self._in_blocks)
