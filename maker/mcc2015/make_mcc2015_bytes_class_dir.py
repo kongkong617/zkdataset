@@ -68,7 +68,7 @@ def do_make(file_path, label, visualer):
     label_path = os.path.join(DTRAIN, repr(byte_label))
     if make_path(label_path):
         file_path = os.path.join(label_path, byte_id+".bmp")
-        byte_img.save(file_path, format="BMP)
+        byte_img.save(file_path, format="BMP")
         log.info('save {}'.format(file_path))
     else:
         return False
