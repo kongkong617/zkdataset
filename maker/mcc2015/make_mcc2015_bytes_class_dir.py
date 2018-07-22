@@ -18,7 +18,7 @@ DTRAIN = os.path.join(MCC2015, 'bytes_data')
 
 # make setting
 VENCODELEN = 512
-VSIZE = 512 * 512
+VSIZE = 512 * 800
 
 
 def make_path(file_path):
