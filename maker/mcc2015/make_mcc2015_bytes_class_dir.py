@@ -18,6 +18,7 @@ DTRAIN = os.path.join(MCC2015, 'bytes_data')
 
 # make setting
 VENCODELEN = 512
+VSIZE = 512 * 512
 
 
 def make_path(file_path):
@@ -83,7 +84,7 @@ async def dispatch_work(executor, sample_path):
     label = load_label(TRAINLABEL)
 
     log.info('build visualer')
-    visualer = Visual(name=None, vtype=2, vwidth=VENCODELEN)
+    visualer = Visual(vtype=2, vwidth=VENCODELEN, vsize=VSIZE)
 
 
     log.info('creating executor tasks')
