@@ -64,12 +64,12 @@ def do_make(file_path, label, visualer):
         log.error(e)
         return False
 
-    log.info('{} byte image shape is {}'.format(byte_id, byte_np.shape))
-
     label_path = os.path.join(DTRAIN, repr(byte_label))
     if make_path(label_path):
         file_path = os.path.join(label_path, byte_id+".npy")
-        np.save(file_path, byte_np)
+        resize_np = byte_np.reshape([-1, VENCODELEN, 1])
+        log.info('{} byte image shape is {}'.format(byte_id, resize_np.shape))
+        np.save(file_path, resize_np)
         log.info('save {}'.format(file_path))
     else:
         return False
