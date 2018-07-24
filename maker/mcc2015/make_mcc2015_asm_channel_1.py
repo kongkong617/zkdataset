@@ -68,7 +68,7 @@ def do_make(file_path, label, visualer):
     label_path = os.path.join(DTRAIN, repr(asm_label))
     if make_path(label_path):
         file_path = os.path.join(label_path, asm_id+".npy")
-        resize_np = asm_np.reshape([-1, 64, 1])
+        resize_np = asm_np.reshape([1, -1, 1])
         log.info('{} resize_np shape is {}'.format(asm_id, resize_np.shape))
         np.save(file_path, resize_np)
         log.info('save {}'.format(file_path))
