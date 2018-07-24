@@ -18,7 +18,7 @@ DTRAIN = os.path.join(MCC2015, 'asm_channel_1')
 
 # make setting
 VENCODELEN = 64
-VSIZE = 6400 * 64
+VSIZE = 3200 * 64
 
 
 def make_path(file_path):
