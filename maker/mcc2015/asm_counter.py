@@ -44,6 +44,7 @@ def do_make(file_path, label):
     # log.info('{} is {}'.format(asm_id, asm_label))
     
     ct, lg = instruction_count(file_path)
+    log.info('{} : ct={} lg={}'.format(asm_id, ct, lg))
     
     return (ct, lg)
 
@@ -84,9 +85,14 @@ async def dispatch_work(executor, sample_path):
     order_textlen = OrderedDict(sorted(textlen_per_file.items()))
     order_codelen = OrderedDict(sorted(codelen_per_text.items()))
 
+    print(order_textlen)
+    print(order_codelen)
+
     # save
-    pickle.dump(order_textlen, "mcc2015_textlen_per_file")
-    pickle.dump(order_codelen, "mcc2015_codelen_per_text")
+    with open("mcc2015_textlen_per_file", 'w') as f: 
+        pickle.dump(order_textlen, f, -1)
+    with open("mcc2015_codelen_per_text", 'w') as f:
+        pickle.dump(order_codelen, f, -1)
     
     log.info('mcc2015 asm count tasks is done!!!')
 
