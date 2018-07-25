@@ -89,9 +89,9 @@ async def dispatch_work(executor, sample_path):
     print(order_codelen)
 
     # save
-    with open("mcc2015_textlen_per_file", 'w') as f: 
+    with open("mcc2015_textlen_per_file", 'wb') as f: 
         pickle.dump(order_textlen, f, -1)
-    with open("mcc2015_codelen_per_text", 'w') as f:
+    with open("mcc2015_codelen_per_text", 'wb') as f:
         pickle.dump(order_codelen, f, -1)
     
     log.info('mcc2015 asm count tasks is done!!!')
