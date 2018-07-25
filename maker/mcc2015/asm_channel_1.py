@@ -14,7 +14,7 @@ HOME = os.environ['HOME']
 MCC2015 = os.path.join(HOME, 'DataSet/kaggle/MCC2015')
 ORIASM = os.path.join(MCC2015, 'otrain/asm')
 TRAINLABEL = os.path.join(MCC2015, 'trainLabels.csv')
-DTRAIN = os.path.join(MCC2015, 'asm_channel_1')
+DTRAIN = os.path.join(MCC2015, 'asm_channel_1_3200')
 
 # make setting
 VENCODELEN = 64
@@ -68,7 +68,7 @@ def do_make(file_path, label, visualer):
     label_path = os.path.join(DTRAIN, repr(asm_label))
     if make_path(label_path):
         file_path = os.path.join(label_path, asm_id+".npy")
-        resize_np = asm_np.reshape([1, -1, 1])
+        resize_np = asm_np.reshape([-1, 64, 1])
         log.info('{} resize_np shape is {}'.format(asm_id, resize_np.shape))
         np.save(file_path, resize_np)
         log.info('save {}'.format(file_path))
