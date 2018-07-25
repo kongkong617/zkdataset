@@ -15,10 +15,9 @@ def instruction_length(aline:str):
             oplist.extend(s_obj.group()[:2])
     
     lg = len(oplist) * 4
-    if lg >= 120:    # valid max length is 120 bits
-        return 120
+    if lg > 120:    # valid max length is 120 bits
+        return 0
     else:
-
         return lg
 
 
