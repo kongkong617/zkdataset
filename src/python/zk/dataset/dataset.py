@@ -35,6 +35,7 @@ class DataSet(keras.utils.Sequence):
 
         for i, id in enumerate(list_ids):
             result = self.columns[id]
+            print(result[self.KEYS.X].shape)
             X[i, ] = result[self.KEYS.X]
             y[i, ] = result[self.KEYS.Y]
 
