@@ -82,11 +82,11 @@ async def dispatch_work(executor, sample_path):
                 codelen_per_text[k] = v
 
     # orderdict
-    order_textlen = OrderedDict(sorted(textlen_per_file.items()))
-    order_codelen = OrderedDict(sorted(codelen_per_text.items()))
+    order_textlen = dict(OrderedDict(sorted(textlen_per_file.items())))
+    order_codelen = dict(OrderedDict(sorted(codelen_per_text.items())))
 
-    print(order_textlen)
-    print(order_codelen)
+    # print(order_textlen)
+    # print(order_codelen)
 
     # save
     with open("mcc2015_textlen_per_file", 'wb') as f: 
