@@ -22,3 +22,15 @@
 .text:00401045 56							       push    esi
 .text:00401046 E8 6C 1E	00 00						       call    ??3@YAXPAX@Z    ; operator delete(void *)
 .text:0040104B 83 C4 04							       add     esp, 4
+.idata:0046F4DC							;
+.idata:0046F4DC							; Imports from KERNEL32.DLL
+.idata:0046F4DC							;
+.idata:0046F4DC							; ===========================================================================
+.idata:0046F4DC
+.idata:0046F4DC							; Segment type:	Externs
+.idata:0046F4DC							; _idata
+.idata:0046F4DC							; DWORD	__stdcall GetCurrentThreadId()
+.idata:0046F4DC	?? ?? ?? ??							extrn __imp_GetCurrentThreadId:dword
+.idata:0046F4DC												; DATA XREF: .text:0046F66Co
+.idata:0046F4DC												; GetCurrentThreadIdr
+.idata:0046F4E0	
