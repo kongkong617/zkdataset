@@ -14,11 +14,11 @@ HOME = os.environ['HOME']
 MCC2015 = os.path.join(HOME, 'DataSet/kaggle/MCC2015')
 ORIASM = os.path.join(MCC2015, 'otrain/asm')
 TRAINLABEL = os.path.join(MCC2015, 'trainLabels.csv')
-DTRAIN = os.path.join(MCC2015, 'asm_channel_1_3200')
+DTRAIN = os.path.join(MCC2015, 'asm_channel_1_6400')
 
 # make setting
 VENCODELEN = 64
-VSIZE = 3200 * 64
+VSIZE = 6400 * 64
 
 
 def make_path(file_path):
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO,
                         format='%(asctime)s %(name)8s %(levelname)4s %(message)s',
                         datefmt='%m-%d %H:%M',
-                        filename=('mcc2015_maker_asm_channel_1_3200.log'),
+                        filename=('mcc2015_maker_asm_channel_1_6400.log'),
                         filemode='w')
     console = logging.StreamHandler()
     console.setLevel(logging.INFO)
