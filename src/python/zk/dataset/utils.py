@@ -16,7 +16,7 @@ def instruction_length(aline:str):
     
     lg = len(oplist) * 4
     if lg > 120:    # valid max length is 120 bits
-        return -1
+        return 0
     else:
         return lg
 
@@ -32,7 +32,7 @@ def instruction_count(fname) -> (int, Dict):
                 break
             if line[0:5] == '.text':
                 lg = instruction_length(line)
-                if lg == -1:
+                if lg == 0:
                     continue
                 else:
                     if lg in _length:
