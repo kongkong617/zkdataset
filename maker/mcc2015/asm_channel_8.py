@@ -61,7 +61,7 @@ def do_make(file_path):
 
     asm_id = os.path.basename(file_path).split('.')[0]
     log.info('parse asm_id = {}'.format(asm_id))
-    asm_label = os.path.dirname(file_path)
+    asm_label = os.path.basename(os.path.dirname(file_path))
     log.info('{} is {}'.format(asm_id, asm_label))
     
     ori_np = np.load(file_path)
