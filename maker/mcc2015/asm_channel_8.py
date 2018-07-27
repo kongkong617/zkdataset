@@ -9,11 +9,11 @@ from typing import Dict, List, Tuple
 # Path setting
 HOME = os.environ['HOME']
 MCC2015 = os.path.join(HOME, 'DataSet/kaggle/MCC2015')
-ORIASM = os.path.join(MCC2015, 'asm_channel_1_3200')
-DTRAIN = os.path.join(MCC2015, 'asm_channel_8_3200')
+ORIASM = os.path.join(MCC2015, 'asm_channel_1_6400')
+DTRAIN = os.path.join(MCC2015, 'asm_channel_8_6400')
 
 # make setting
-NEWSHAPE = (400, 64, 8)
+NEWSHAPE = (800, 64, 8)
 ORDER = (3, 2, 1)
 
 
