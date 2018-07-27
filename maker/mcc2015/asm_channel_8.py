@@ -5,8 +5,6 @@ import time
 import concurrent.futures
 import numpy as np
 from typing import Dict, List, Tuple
-from zk.dataset.mcc2015 import AsmopGenerator
-
 
 # Path setting
 HOME = os.environ['HOME']
@@ -17,6 +15,31 @@ DTRAIN = os.path.join(MCC2015, 'asm_channel_8_3200')
 # make setting
 NEWSHAPE = (400, 64, 8)
 ORDER = (3, 2, 1)
+
+
+class AsmopGenerator:
+    """
+    Argument:
+        `asmop_np`: A asmopcode visual numpy.
+            row: number of asmopcode
+            col: visual coding length of one asmopcode
+    Return:
+        A generator, put a row in asmop_np each time
+    """
+    def __init__(self, asmop_np):
+        self.asmop_np = asmop_np
+        self.nb_opcode = asmop_np.shape[0]
+        self._g = self._make_generator()
+
+    def __iter__(self):
+        return self 
+
+    def __next__(self):
+        return next(self._g)
+
+    def _make_generator(self):
+        for i in range(self.nb_opcode):
+            yield self.asmop_np[i, :, 0]
 
 
 def make_path(file_path):
