@@ -17,8 +17,8 @@ TRAINLABEL = os.path.join(MCC2015, 'trainLabels.csv')
 DTRAIN = os.path.join(MCC2015, 'asm_L_Nara')
 
 # make setting
-VENCODELEN = 512
-VSIZE = 512 * 512
+VENCODELEN = 64
+VSIZE = 6400 * 64
 
 
 def make_path(file_path):
@@ -67,7 +67,7 @@ def do_make(file_path, label, visualer):
     label_path = os.path.join(DTRAIN, repr(byte_label))
     if make_path(label_path):
         file_path = os.path.join(label_path, byte_id+".npy")
-        resize_np = byte_np.reshape([-1, 512, 1])
+        resize_np = byte_np.reshape([-1, 64, 1])
         log.info('{} byte image shape is {}'.format(byte_id, resize_np.shape))
         np.save(file_path, resize_np)
         log.info('save {}'.format(file_path))
