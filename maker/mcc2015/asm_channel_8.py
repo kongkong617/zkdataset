@@ -146,27 +146,27 @@ if __name__ == '__main__':
     logging.info('make mcc2015 dataset at %s' % local_time)
     
     # ================= muti-executor start ================ #
-    # sample_path = dirlist(ORIASM)
-    # if not sample_path:
-    #     logging.error('make mcc2015 dataset stop')        
-    #     exit(0)
+    sample_path = dirlist(ORIASM)
+    if not sample_path:
+        logging.error('make mcc2015 dataset stop')        
+        exit(0)
 
-    # event_loop = asyncio.get_event_loop()
-    # executor = concurrent.futures.ProcessPoolExecutor(
-    #      max_workers=64,
-    # )
-    # try:
-    #     event_loop.run_until_complete(
-    #         dispatch_work(executor, sample_path)
-    #     )
-    # finally:
-    #     event_loop.close()
+    event_loop = asyncio.get_event_loop()
+    executor = concurrent.futures.ProcessPoolExecutor(
+         max_workers=64,
+    )
+    try:
+        event_loop.run_until_complete(
+            dispatch_work(executor, sample_path)
+        )
+    finally:
+        event_loop.close()
     # ================= muti-executor end ================ #
 
     # ================= single-executor start ============ #
-    sample_path = dirlist(ORIASM)
-    for i in sample_path:
-        do_make(i)
+    # sample_path = dirlist(ORIASM)
+    # for i in sample_path:
+    #     do_make(i)
 
     end_time = time.time()
     local_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
