@@ -47,7 +47,7 @@ def _resize(ori_np, newshape):
     padding = np.zeros(newshape)
 
     asmgen = AsmopGenerator(ori_np)
-    log.info()
+    log.info("start _resize...")
     for i_row in range(dim1):
         for i_channel in range(dim3):
             try:
