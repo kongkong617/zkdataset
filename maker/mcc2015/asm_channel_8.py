@@ -93,7 +93,7 @@ def do_make(file_path):
     resize_np = _resize(ori_np, NEWSHAPE)
     log.info('{} resized shape is {}'.format(asm_id, resize_np.shape))
 
-    label_path = os.path.join(DTRAIN, repr(asm_label))
+    label_path = os.path.join(DTRAIN, asm_label)
     if make_path(label_path):
         file_path = os.path.join(label_path, asm_id+".npy")
         np.save(file_path, resize_np)
