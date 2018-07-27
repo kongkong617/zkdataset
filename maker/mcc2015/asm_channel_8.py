@@ -42,6 +42,7 @@ def dirlist(path):
     return sample_path
 
 def _resize(ori_np, newshape):
+    log = logging.getLogger('woker {}'.format(os.getpid()))
     (dim1, dim2, dim3) = newshape
     padding = np.zeros(newshape)
 
@@ -50,8 +51,8 @@ def _resize(ori_np, newshape):
         for i_channel in range(dim3):
             try:
                 padding[i_row, : , i_channel] = next(asmgen)
-            except StopIteration:
-                break
+            except StopIteration as e:
+                log.error(e)
 
     return padding
 
