@@ -14,7 +14,7 @@ HOME = os.environ['HOME']
 MCC2015 = os.path.join(HOME, 'DataSet/kaggle/MCC2015')
 ORIASM = os.path.join(MCC2015, 'otrain/asm')
 TRAINLABEL = os.path.join(MCC2015, 'trainLabels.csv')
-DTRAIN = os.path.join(MCC2015, 'asm_L_Nara')
+DTRAIN = os.path.join(MCC2015, 'asm_L_Nara_test')
 
 # make setting
 VENCODELEN = 64
