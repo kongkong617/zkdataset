@@ -12,7 +12,7 @@ from zk.visual import Visual, VisualType
 # Path setting
 HOME = os.environ['HOME']
 MCC2015 = os.path.join(HOME, 'DataSet/kaggle/MCC2015')
-ORIASM = os.path.join(MCC2015, 'otrain/asm')
+ORIASM = os.path.join(MCC2015, 'otrain/bytes')
 TRAINLABEL = os.path.join(MCC2015, 'trainLabels.csv')
 DTRAIN = os.path.join(MCC2015, 'asm_real_nara')
 
