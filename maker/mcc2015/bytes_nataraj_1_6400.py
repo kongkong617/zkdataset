@@ -61,12 +61,13 @@ def do_make(file_path, label, rend):
     
     # render
     rend_np = rend(file_path)
+    log.info('{} origin shape is {}'.format(sample_id, rend_np.shape))
 
     label_path = os.path.join(DTRAIN, repr(sample_label))
     if make_path(label_path):
         file_path = os.path.join(label_path, sample_id+".npy")
-        resize_np = byte_np.reshape([-1, 64, 1])
-        log.info('{} byte image shape is {}'.format(sample_id, resize_np.shape))
+        resize_np = rend_np.reshape([-1, 64, 1])
+        log.info('{} resize shape is {}'.format(sample_id, resize_np.shape))
         np.save(file_path, resize_np)
         log.info('save {}'.format(file_path))
     else:
