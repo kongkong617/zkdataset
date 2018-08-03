@@ -1,2 +1,2 @@
 ### zk-dataset
-ZhongKui Malware deeplearning utilities.
+ZhongKui Malware deeplearning dataset utilities.
